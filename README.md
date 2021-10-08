@@ -1,5 +1,9 @@
 # Checkout this application at: https://advanced-todo-react.netlify.app/
 
+
+**Update**
+Material UI is now intergrated in this application. Enjoy!
+
 This application focuses on the basic concepts of React and JavaScript
 
 Some of the features in this application:
@@ -17,3 +21,5 @@ Upcoming Features:
 1. Matrial UI integration
 2. Mobile version
 3. Dark Mode
+
+
