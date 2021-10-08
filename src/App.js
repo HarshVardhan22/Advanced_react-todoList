@@ -5,6 +5,9 @@ export default function App() {
   const [value, setValue] = useState("");
   const [error, setError] = useState();
   const [functionCalled, setfunctionCalled] = useState(true);
+  const [showEditInput, setShowEditInput] = useState(false);
+  const [newValue, setNewValue] = useState("");
+  const [todoSelected, setTodoSelected] = useState("");
 
   //! check if the local storage has data or not
   //! if it has data set it as the def. value of state
@@ -17,6 +20,10 @@ export default function App() {
 
   const handleChange = (e) => {
     setValue(e.target.value);
+  };
+
+  const handleEditChange = (e) => {
+    setNewValue(e.target.value);
   };
 
   const compareByName = (a, b) => {
@@ -67,8 +74,7 @@ export default function App() {
     }
   };
 
-  const handleComplete = (e,id) => {
-  
+  const handleComplete = (e, id) => {
     let temp = [...todo];
 
     temp.forEach((item) => {
@@ -80,10 +86,27 @@ export default function App() {
     setTodo(temp);
   };
 
-  const handleDelete = (id) => {
+  const handleEditInput = (e, id) => {
+    setShowEditInput(true);
+    setTodoSelected(id);
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const temp = [...todo];
+
+    temp.forEach((item) => {
+      if (Number.parseInt(item.id, 10) === Number.parseInt(todoSelected))
+        item.name = newValue;
+    });
+    setShowEditInput(false);
+    setNewValue("");
+    setTodo(temp);
+  };
+
+  const handleDelete = (e, id) => {
     let temp = todo.filter(
-      (item) =>
-        Number.parseInt(item.id, 10) !== Number.parseInt(id, 10)
+      (item) => Number.parseInt(item.id, 10) !== Number.parseInt(id, 10)
     );
     setTodo(temp);
   };
@@ -135,6 +158,14 @@ export default function App() {
           value={value}
           onChange={handleChange}
         />
+        {showEditInput && (
+          <form onSubmit={handleUpdate}>
+            <input value={newValue} onChange={handleEditChange} />
+            <button type="submit" onClick={handleUpdate}>
+              Update
+            </button>
+          </form>
+        )}
         <button type="submit" onClick={handleSubmit}>
           Add
         </button>
@@ -155,9 +186,14 @@ export default function App() {
                 {item.name}
               </p>
               {item.completed && <p>{item.completedAt}</p>}
-              <button onClick={(e) => handleComplete(e,item.id)} disabled={item.completed}>Completed</button>
-              <button onClick={(e) => handleDelete(e,item.id)}>Edit</button>
-              <button onClick={(e) => handleDelete(e,item.id)}>Delete</button>
+              <button
+                onClick={(e) => handleComplete(e, item.id)}
+                disabled={item.completed}
+              >
+                Completed
+              </button>
+              <button onClick={(e) => handleEditInput(e, item.id)}>Edit</button>
+              <button onClick={(e) => handleDelete(e, item.id)}>Delete</button>
             </div>
           );
         })}
