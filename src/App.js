@@ -1,5 +1,20 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import DoneIcon from "@mui/icons-material/Done";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
+
 export default function App() {
   const [id, setId] = useState(1);
   const [value, setValue] = useState("");
@@ -150,51 +165,74 @@ export default function App() {
     <div className="App">
       <h1>Hello User</h1>
       <h2>Start Adding TODOs to see some magic happen!</h2>
-      <button onClick={handleSortByCompleted}>Sort by Completion</button>
-      <button onClick={handleSortByName}>Sort by Name</button>
+      <Button variant="contained" sx={{ m: 2 }} onClick={handleSortByCompleted}>
+        Sort by Completion
+      </Button>
+      <Button variant="contained" sx={{ m: 2 }} onClick={handleSortByName}>
+        Sort by Name
+      </Button>
       <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Enter a task here"
+        <TextField
+          label="Enter TODO"
+          variant="standard"
           value={value}
           onChange={handleChange}
         />
         {showEditInput && (
           <form onSubmit={handleUpdate}>
-            <input value={newValue} onChange={handleEditChange} />
-            <button type="submit" onClick={handleUpdate}>
+            <TextField
+              label="Updated value of TODO"
+              variant="standard"
+              value={newValue}
+              onChange={handleEditChange}
+            />
+            <Button
+              variant="contained"
+              sx={{ m: 2 }}
+              type="submit"
+              onClick={handleUpdate}
+            >
               Update
-            </button>
+            </Button>
           </form>
         )}
-        <button type="submit" onClick={handleSubmit}>
-          Add
-        </button>
+        <AddIcon type="submit" onClick={handleSubmit}></AddIcon>
       </form>
 
-      <button onClick={handleReset}>Reset</button>
+      <Button variant="contained" sx={{ m: 2 }} onClick={handleReset}>
+        Reset
+      </Button>
       <div className="todo">
         {todo?.map((item, index) => {
           return (
-            <div key={item.id}>
-              <p
-                style={
-                  item.completed
-                    ? { textDecoration: "line-through" }
-                    : { textDecoration: "none" }
-                }
-              >
-                {item.name}
-              </p>
-              {item.completed && <p>{item.completedAt}</p>}
-              <button
-                onClick={(e) => handleComplete(e, item.id)}
-                disabled={item.completed}
-              >
-                Completed
-              </button>
-              <button onClick={(e) => handleEditInput(e, item.id)}>Edit</button>
-              <button onClick={(e) => handleDelete(e, item.id)}>Delete</button>
-            </div>
+            <Card key={item.id} className="card">
+              <div className="todoDetails">
+                <h3
+                  style={
+                    item.completed
+                      ? { textDecoration: "line-through" }
+                      : { textDecoration: "none" }
+                  }
+                >
+                  {item.name}
+                </h3>
+                {item.completed && (
+                  <p className="completedAt">{item.completedAt}</p>
+                )}
+              </div>
+
+              <CardActions>
+                <IconButton disabled={item.completed}>
+                  <DoneIcon onClick={(e) => handleComplete(e, item.id)} />
+                </IconButton>
+                <IconButton>
+                  <EditIcon onClick={(e) => handleEditInput(e, item.id)} />
+                </IconButton>
+                <IconButton>
+                  <DeleteIcon onClick={(e) => handleDelete(e, item.id)} />
+                </IconButton>
+              </CardActions>
+            </Card>
           );
         })}
         {(error !== "" || error !== null) && <p>{error}</p>}
