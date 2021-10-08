@@ -3,16 +3,14 @@ import React, { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
+
 
 import {
   Button,
   Card,
   CardActions,
-  CardContent,
   IconButton,
   TextField,
-  Typography,
 } from "@mui/material";
 
 export default function App() {
@@ -32,7 +30,7 @@ export default function App() {
     position: "fixed",
   };
 
-  const colorCodes = ["#F44336", "#9C27B0", "#2196F3", "#00897B", "#FBC02D"];
+ // const colorCodes = ["#F44336", "#9C27B0", "#2196F3", "#00897B", "#FBC02D"];
   //! check if the local storage has data or not
   //! if it has data set it as the def. value of state
 
