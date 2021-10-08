@@ -18,7 +18,7 @@ import {
 export default function App() {
   const [id, setId] = useState(1);
   const [value, setValue] = useState("");
-  const [error, setError] = useState();
+  const [error, setError] = useState(1);
   const [functionCalled, setfunctionCalled] = useState(true);
   const [showEditInput, setShowEditInput] = useState(false);
   const [newValue, setNewValue] = useState("");
@@ -32,6 +32,7 @@ export default function App() {
     position: "fixed",
   };
 
+  const colorCodes = ["#F44336", "#9C27B0", "#2196F3", "#00897B", "#FBC02D"];
   //! check if the local storage has data or not
   //! if it has data set it as the def. value of state
 
@@ -81,7 +82,7 @@ export default function App() {
         //! throwing error and will catch later
         throw new Error("Task cant be empty");
       } else {
-        setError("");
+        setError(1);
         let task = {
           name: value,
           completed: false,
@@ -126,6 +127,7 @@ export default function App() {
           if (Number.parseInt(item.id, 10) === Number.parseInt(todoSelected))
             item.name = newValue;
         });
+        setError(1);
         setShowEditInput(false);
         setNewValue("");
         setTodo(temp);
@@ -179,113 +181,138 @@ export default function App() {
 
   return (
     <div className="App">
-      <div style={showEditInput||error ? overlayStyling : { display: "none" }}></div>
-      <div className="conditionalDivs">
-      {showEditInput && (
-        <form className="editForm" onSubmit={handleUpdate}>
-          <TextField
-            label="Updated value of TODO"
-            variant="standard"
-            value={newValue}
-            onChange={handleEditChange}
-          />
-          <Button
-            variant="contained"
-            sx={{ m: 2 }}
-            type="submit"
-            onClick={handleUpdate}
-          >
-            Update
-          </Button>
-        </form>
-      )}
-      {(error !== "" && error !== null) && (
+      <div className="mainContainer">
+        <div style={showEditInput ? overlayStyling : { display: "none" }}></div>
+        <div
+          style={
+            typeof error === "string" ? overlayStyling : { display: "none" }
+          }
+        ></div>
+        <div className="conditionalDivs">
+          {showEditInput && (
+            <form className="editForm" onSubmit={handleUpdate}>
+              <TextField
+                label="Updated value of TODO"
+                variant="standard"
+                value={newValue}
+                onChange={handleEditChange}
+              />
+              <div className="editBtns">
+                <Button
+                  variant="contained"
+                  sx={{ m: 2 }}
+                  type="submit"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{ m: 2 }}
+                  type="submit"
+                  onClick={() => {
+                    setShowEditInput(false);
+                  }}
+                >
+                  Back
+                </Button>
+              </div>
+            </form>
+          )}
+          {typeof error === "string" && (
             <div className="error">
-              
               <p>{error}</p>
             </div>
           )}
-      </div>
-      
-      <div className="container">
-        <header>
-          <div className="functionButtons">
-            <Button
-              variant="contained"
-              sx={{ m: 2 }}
-              onClick={handleSortByCompleted}
-            >
-              Sort by Completion
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ m: 2 }}
-              onClick={handleSortByName}
-            >
-              Sort by Name
-            </Button>
+        </div>
 
-            <Button variant="contained" sx={{ m: 2 }} onClick={handleReset}>
-              Reset
-            </Button>
-          </div>
-
-          <div className="inputForm">
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Enter TODO"
-                variant="standard"
-                value={value}
-                onChange={handleChange}
-              />
-
+        <div className="container">
+          <header>
+            <div className="functionButtons">
               <Button
                 variant="contained"
                 sx={{ m: 2 }}
-                type="submit"
-                onClick={handleSubmit}
+                onClick={handleSortByCompleted}
               >
-                Add
+                Sort by Completion
               </Button>
-            </form>
+              <Button
+                variant="contained"
+                sx={{ m: 2 }}
+                onClick={handleSortByName}
+              >
+                Sort by Name
+              </Button>
+
+              <Button variant="contained" sx={{ m: 2 }} onClick={handleReset}>
+                Reset
+              </Button>
+            </div>
+
+            <div className="inputForm">
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Enter TODO"
+                  variant="standard"
+                  value={value}
+                  onChange={handleChange}
+                />
+
+                <Button
+                  variant="contained"
+                  sx={{ m: 2 }}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Add
+                </Button>
+              </form>
+            </div>
+          </header>
+
+          <div className="todo">
+            {todo?.map((item) => {
+              return (
+                <Card
+                  elevation={4}
+                  key={item.id}
+                  className="card"
+                  style={
+                    item.completed
+                      ? { backgroundColor: "#3fe878" }
+                      : { backgroundColor: "#e0e0e0" }
+                  }
+                >
+                  <div className="todoDetails">
+                    <h3
+                      style={
+                        item.completed
+                          ? { textDecoration: "line-through" }
+                          : { textDecoration: "none" }
+                      }
+                    >
+                      {item.name}
+                    </h3>
+                    {item.completed && (
+                      <p className="completedAt">{item.completedAt}</p>
+                    )}
+                  </div>
+
+                  <CardActions>
+                    <IconButton disabled={item.completed}>
+                      <DoneIcon onClick={(e) => handleComplete(e, item.id)} />
+                    </IconButton>
+                    <IconButton>
+                      <EditIcon onClick={(e) => handleEditInput(e, item.id)} />
+                    </IconButton>
+                    <IconButton>
+                      <DeleteIcon onClick={(e) => handleDelete(e, item.id)} />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              );
+            })}
           </div>
-        </header>
-
-        <div className="todo">
-          {todo?.map((item) => {
-            return (
-              <Card elevation={4} key={item.id} className="card">
-                <div className="todoDetails">
-                  <h3
-                    style={
-                      item.completed
-                        ? { textDecoration: "line-through" }
-                        : { textDecoration: "none" }
-                    }
-                  >
-                    {item.name}
-                  </h3>
-                  {item.completed && (
-                    <p className="completedAt">{item.completedAt}</p>
-                  )}
-                </div>
-
-                <CardActions>
-                  <IconButton disabled={item.completed}>
-                    <DoneIcon onClick={(e) => handleComplete(e, item.id)} />
-                  </IconButton>
-                  <IconButton>
-                    <EditIcon onClick={(e) => handleEditInput(e, item.id)} />
-                  </IconButton>
-                  <IconButton>
-                    <DeleteIcon onClick={(e) => handleDelete(e, item.id)} />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            );
-          })}
-
-         
         </div>
       </div>
     </div>

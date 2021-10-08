@@ -1,17 +1,14 @@
-
-
-.container{
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   flex-direction: column;
 }
 
-.card{
-
+.card {
   margin: 15px;
-  width:20vw;
+  width: 20vw;
   height: 6vw;
   display: flex;
   flex-direction: column;
@@ -22,10 +19,10 @@
   overflow-y: scroll;
 }
 
-.completedAt{
- font-size: 14px;
+.completedAt {
+  font-size: 14px;
 }
-.todoDetails{
+.todoDetails {
   max-width: 10vw;
   display: flex;
   flex-direction: column;
@@ -33,7 +30,7 @@
   justify-content: space-around;
 }
 
-header{
+header {
   display: flex;
   margin-top: 25px;
   flex-direction: column;
@@ -41,9 +38,9 @@ header{
   align-items: center;
 }
 
-.todo{
+.todo {
   overflow-y: scroll;
-  height: 70vh;
+  height: 65vh;
   min-width: 30vw;
 
   display: flex;
@@ -52,45 +49,58 @@ header{
   align-items: center;
 }
 
-.editForm{
-  background:white;
- z-index:3;
-  height:20vh;
-  width:25vw;
+.editForm {
+  background: white;
+  z-index: 3;
+  height: 20vh;
+  width: 25vw;
   border-radius: 5px;
-position: fixed;
-top:20%;
-left:38%;
+  position: fixed;
+  top: 20%;
+  left: 38%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.error{
-  background:crimson;
+.error {
+  background: crimson;
   color: white;
-  
- z-index:3;
-  height:10vh;
-  width:25vw;
+
+  z-index: 3;
+  height: 10vh;
+  width: 25vw;
   border-radius: 5px;
-  position:fixed;
-  top:60%;
-left:38%;
+  position: fixed;
+  top: 60%;
+  left: 38%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.error>p{
+.error > p {
   font-size: 24px;
 }
 
-.App{
+.App {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100vw;
+  background-color: #ab6363;
+}
+
+.mainContainer {
+  display: flex;
+  background-color: #ffffff;
+  box-shadow: -5px 5px 25px -1px rgba(0, 0, 0, 0.75);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  width: 95vw;
 }
