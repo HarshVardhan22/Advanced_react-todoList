@@ -67,13 +67,12 @@ export default function App() {
     }
   };
 
-  const handleComplete = (e) => {
-    e.target.style.backgroundColor = "green";
-    e.target.style.color = "whitesmoke";
+  const handleComplete = (e,id) => {
+  
     let temp = [...todo];
 
     temp.forEach((item) => {
-      if (Number.parseInt(item.id, 10) === Number.parseInt(e.target.id, 10)) {
+      if (Number.parseInt(item.id, 10) === Number.parseInt(id, 10)) {
         item.completed = true;
         item.completedAt = new Date().toLocaleTimeString();
       }
@@ -81,10 +80,10 @@ export default function App() {
     setTodo(temp);
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = (id) => {
     let temp = todo.filter(
       (item) =>
-        Number.parseInt(item.id, 10) !== Number.parseInt(e.target.id, 10)
+        Number.parseInt(item.id, 10) !== Number.parseInt(id, 10)
     );
     setTodo(temp);
   };
@@ -156,8 +155,9 @@ export default function App() {
                 {item.name}
               </p>
               {item.completed && <p>{item.completedAt}</p>}
-              <button onClick={() => handleComplete(item.id)}>Completed</button>
-              <button onClick={() => handleDelete(item.id)}>Delete</button>
+              <button onClick={(e) => handleComplete(e,item.id)} disabled={item.completed}>Completed</button>
+              <button onClick={(e) => handleDelete(e,item.id)}>Edit</button>
+              <button onClick={(e) => handleDelete(e,item.id)}>Delete</button>
             </div>
           );
         })}
